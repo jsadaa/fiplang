@@ -72,6 +72,30 @@ public partial class FipBaseListener : IFipListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCommand([NotNull] FipParser.CommandContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="FipParser.mem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterMem([NotNull] FipParser.MemContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="FipParser.mem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitMem([NotNull] FipParser.MemContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="FipParser.freemem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFreemem([NotNull] FipParser.FreememContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="FipParser.freemem"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFreemem([NotNull] FipParser.FreememContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="FipParser.print"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

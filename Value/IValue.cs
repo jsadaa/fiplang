@@ -1,4 +1,4 @@
-namespace SpreadSheet.Value;
+namespace FipLang.Value;
 
 public interface IValue
 {

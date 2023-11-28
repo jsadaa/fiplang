@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Antlr4.Runtime;
-using SpreadSheet;
+using FipLang.Data;
+using FipLang.Type;
 
 namespace FipLang
 {
@@ -18,14 +19,15 @@ namespace FipLang
                 FipParser fipParser = new FipParser(commonTokenStream);
 
                 FipParser.FileContext fileContext = fipParser.file();
-                BaseFipVisitor visitor = new BaseFipVisitor();
+                Repository dataRepository = new Repository();
+                CustomFipVisitor visitor = new CustomFipVisitor(dataRepository);
 
                 var resultContent = new StringBuilder();
 
                 foreach (var commandline in fileContext.commandline())
                 {
                     var data = visitor.Visit(commandline);
-                    if (data.Type != SpreadSheet.Type.Integrated.Void)
+                    if (data.Type != Integrated.Void)
                         resultContent.AppendLine(data.Value.ToString());
                 }
 

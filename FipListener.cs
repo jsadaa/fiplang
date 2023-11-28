@@ -61,6 +61,26 @@ public interface IFipListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCommand([NotNull] FipParser.CommandContext context);
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="FipParser.mem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterMem([NotNull] FipParser.MemContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="FipParser.mem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitMem([NotNull] FipParser.MemContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="FipParser.freemem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFreemem([NotNull] FipParser.FreememContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="FipParser.freemem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFreemem([NotNull] FipParser.FreememContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="FipParser.print"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

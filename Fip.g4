@@ -6,7 +6,13 @@ commandline         :  command (NEWLINE | EOF);
 
 command             : assignment                                
                     | print                                                    
-                    | update;             
+                    | update
+                    | mem
+                    | freemem;  
+                    
+mem                 : MEM REFERENCE? SEMICOLON;     
+
+freemem             : FREEMEM REFERENCE? SEMICOLON;     
 
 print               : PRINT (expression CONCAT?)+ SEMICOLON;
 

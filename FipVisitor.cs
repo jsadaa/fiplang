@@ -50,6 +50,18 @@ public interface IFipVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCommand([NotNull] FipParser.CommandContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="FipParser.mem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitMem([NotNull] FipParser.MemContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="FipParser.freemem"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFreemem([NotNull] FipParser.FreememContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="FipParser.print"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

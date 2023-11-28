@@ -1,6 +1,6 @@
-using SpreadSheet.Value;
+using FipLang.Value;
 
-namespace SpreadSheet.Type;
+namespace FipLang.Type;
 
 public enum Integrated
 {
@@ -11,7 +11,7 @@ public enum Integrated
 
 public static class IntegratedExtensions
 {
-    public static string ToString(this Integrated integrated)
+    public static string ToLowerStr(this Integrated integrated)
     {
         return integrated switch
         {

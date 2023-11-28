@@ -1,10 +1,11 @@
-using SpreadSheet.Value;
+using FipLang.Type;
+using FipLang.Value;
 
-namespace SpreadSheet.Result;
+namespace FipLang.Data;
 
-public class DataWrapper
+public class Wrapper
 {
-    public Type.Integrated Type;
+    public Integrated Type;
     public IValue Value;
 
     public override string ToString()
