@@ -1,0 +1,15 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+.idea
+*.csproj.user
+*.sln.dotsettings.user
+*.suo
+*.user
+*.userosscache
+*.sln.ide
+*.sln.iml
+.DS_Store
+out/
