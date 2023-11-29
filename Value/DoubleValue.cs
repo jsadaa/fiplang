@@ -10,7 +10,7 @@ public class DoubleValue : IValue
     }
 
     public double Content { get; }
-    public int Length => Content.ToString(CultureInfo.InvariantCulture).Length;
+    public int Length => Content.ToString(CultureInfo.InvariantCulture).Replace(".", "").Length;
 
     public override string ToString()
     {
