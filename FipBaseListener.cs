@@ -160,6 +160,34 @@ public partial class FipBaseListener : IFipListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitMulDivExp([NotNull] FipParser.MulDivExpContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>comparisonExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterComparisonExp([NotNull] FipParser.ComparisonExpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>comparisonExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitComparisonExp([NotNull] FipParser.ComparisonExpContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>boolAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBoolAtomExp([NotNull] FipParser.BoolAtomExpContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>boolAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBoolAtomExp([NotNull] FipParser.BoolAtomExpContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>doubleAtomExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.
 	/// <para>The default implementation does nothing.</para>

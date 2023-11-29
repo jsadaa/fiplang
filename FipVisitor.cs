@@ -94,6 +94,20 @@ public interface IFipVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitMulDivExp([NotNull] FipParser.MulDivExpContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>comparisonExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComparisonExp([NotNull] FipParser.ComparisonExpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>boolAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBoolAtomExp([NotNull] FipParser.BoolAtomExpContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>doubleAtomExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.
 	/// </summary>

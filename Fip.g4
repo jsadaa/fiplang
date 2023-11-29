@@ -21,13 +21,15 @@ update              : UPDATE expression ASSIGN expression SEMICOLON;
 assignment          : SET VALUETYPE IDENTIFIER ASSIGN expression SEMICOLON;
                     
 expression          : '(' expression ')'                        #parenthesisExp
+                    | expression (EQUALS|NOTEQUALS|LESS|GREATER|LESSEQUALS|GREATEREQUALS) expression #comparisonExp
                     | expression (ASTERISK|SLASH) expression    #mulDivExp
                     | expression (PLUS|MINUS) expression        #addSubExp
-                    | STRING                                    #stringAtomExp
                     | IDENTIFIER                                #identifierAtomExp
                     | REFERENCE                                 #referenceAtomExp
+                    | STRING                                    #stringAtomExp
                     | DOUBLE                                    #doubleAtomExp
                     | INTEGER                                   #integerAtomExp
+                    | BOOL                                      #boolAtomExp
                     ;
                                       
 fragment LETTER     : [a-zA-Z] ;
@@ -42,13 +44,20 @@ ASTERISK            : '*' ;
 SLASH               : '/' ;
 PLUS                : '+' ;
 MINUS               : '-' ;
-ASSIGN              : 'to' ;
-VALUETYPE           : 'int' | 'double' | 'string' ;
+EQUALS              : '==' ;
+NOTEQUALS           : '!=' ;
+LESS                : '<' ;
+GREATER             : '>' ;
+LESSEQUALS          : '<=' ;
+GREATEREQUALS       : '>=' ;
+ASSIGN              : '=' ;
+VALUETYPE           : 'int' | 'double' | 'string' | 'bool' ;
 SET                 : 'set' ;
 PRINT               : 'print' ;
 UPDATE              : 'mod' ;
 MEM                 : 'mem' ;
 FREEMEM             : 'freemem' ;
+BOOL                : 'true' | 'false' ;
 STRING              : '"' .*? '"' ;
 IDENTIFIER          : LETTER (LETTER | DIGIT)* ;
 REFERENCE           : AT LETTER (LETTER | DIGIT)* ;

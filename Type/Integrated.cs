@@ -7,6 +7,7 @@ public enum Integrated
     Integer,
     Double,
     String,
+    Bool,
     Void
 }
 
@@ -19,6 +20,7 @@ public static class IntegratedExtensions
             Integrated.Integer => "int",
             Integrated.Double => "double",
             Integrated.String => "string",
+            Integrated.Bool => "bool",
             Integrated.Void => "void",
             _ => throw new ArgumentOutOfRangeException(nameof(integrated), integrated, null)
         };
@@ -31,6 +33,7 @@ public static class IntegratedExtensions
             "int" => Integrated.Integer,
             "double" => Integrated.Double,
             "string" => Integrated.String,
+            "bool" => Integrated.Bool,
             "void" => Integrated.Void,
             _ => throw new ArgumentOutOfRangeException(nameof(str), str, null)
         };
@@ -43,6 +46,7 @@ public static class IntegratedExtensions
             IntegerValue _ => Integrated.Integer,
             DoubleValue _ => Integrated.Double,
             StringValue _ => Integrated.String,
+            BoolValue _ => Integrated.Bool,
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
         };
     }
