@@ -39,7 +39,7 @@ public partial class FipParser : Parser {
 		T__0=1, T__1=2, COMMENT=3, MULTILINE_COMMENT=4, CONCAT=5, SEMICOLON=6, 
 		ASTERISK=7, SLASH=8, PLUS=9, MINUS=10, ASSIGN=11, VALUETYPE=12, SET=13, 
 		PRINT=14, UPDATE=15, MEM=16, FREEMEM=17, STRING=18, IDENTIFIER=19, REFERENCE=20, 
-		NUMBER=21, NEWLINE=22, WHITESPACE=23;
+		DOUBLE=21, INTEGER=22, NEWLINE=23, WHITESPACE=24;
 	public const int
 		RULE_file = 0, RULE_commandline = 1, RULE_command = 2, RULE_mem = 3, RULE_freemem = 4, 
 		RULE_print = 5, RULE_update = 6, RULE_assignment = 7, RULE_expression = 8;
@@ -51,13 +51,13 @@ public partial class FipParser : Parser {
 	private static readonly string[] _LiteralNames = {
 		null, "'('", "')'", null, null, "'.'", "';'", "'*'", "'/'", "'+'", "'-'", 
 		"'to'", null, "'set'", "'print'", "'update'", "'mem'", "'freemem'", null, 
-		null, null, null, null, "' '"
+		null, null, null, null, null, "' '"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, "COMMENT", "MULTILINE_COMMENT", "CONCAT", "SEMICOLON", 
 		"ASTERISK", "SLASH", "PLUS", "MINUS", "ASSIGN", "VALUETYPE", "SET", "PRINT", 
-		"UPDATE", "MEM", "FREEMEM", "STRING", "IDENTIFIER", "REFERENCE", "NUMBER", 
-		"NEWLINE", "WHITESPACE"
+		"UPDATE", "MEM", "FREEMEM", "STRING", "IDENTIFIER", "REFERENCE", "DOUBLE", 
+		"INTEGER", "NEWLINE", "WHITESPACE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -510,7 +510,7 @@ public partial class FipParser : Parser {
 				State = 55;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 3932162L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 8126466L) != 0) );
 			State = 57;
 			Match(SEMICOLON);
 			}
@@ -685,26 +685,6 @@ public partial class FipParser : Parser {
 			else return visitor.VisitChildren(this);
 		}
 	}
-	public partial class NumericAtomExpContext : ExpressionContext {
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NUMBER() { return GetToken(FipParser.NUMBER, 0); }
-		public NumericAtomExpContext(ExpressionContext context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IFipListener typedListener = listener as IFipListener;
-			if (typedListener != null) typedListener.EnterNumericAtomExp(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IFipListener typedListener = listener as IFipListener;
-			if (typedListener != null) typedListener.ExitNumericAtomExp(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNumericAtomExp(this);
-			else return visitor.VisitChildren(this);
-		}
-	}
 	public partial class MulDivExpContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
@@ -729,6 +709,46 @@ public partial class FipParser : Parser {
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
 			if (typedVisitor != null) return typedVisitor.VisitMulDivExp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class DoubleAtomExpContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode DOUBLE() { return GetToken(FipParser.DOUBLE, 0); }
+		public DoubleAtomExpContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.EnterDoubleAtomExp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.ExitDoubleAtomExp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitDoubleAtomExp(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class IntegerAtomExpContext : ExpressionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INTEGER() { return GetToken(FipParser.INTEGER, 0); }
+		public IntegerAtomExpContext(ExpressionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.EnterIntegerAtomExp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.ExitIntegerAtomExp(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitIntegerAtomExp(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -839,7 +859,7 @@ public partial class FipParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 81;
+			State = 82;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__0:
@@ -883,20 +903,29 @@ public partial class FipParser : Parser {
 				Match(REFERENCE);
 				}
 				break;
-			case NUMBER:
+			case DOUBLE:
 				{
-				_localctx = new NumericAtomExpContext(_localctx);
+				_localctx = new DoubleAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
 				State = 80;
-				Match(NUMBER);
+				Match(DOUBLE);
+				}
+				break;
+			case INTEGER:
+				{
+				_localctx = new IntegerAtomExpContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+				State = 81;
+				Match(INTEGER);
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 91;
+			State = 92;
 			ErrorHandler.Sync(this);
 			_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
@@ -905,16 +934,16 @@ public partial class FipParser : Parser {
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 89;
+					State = 90;
 					ErrorHandler.Sync(this);
 					switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
 					case 1:
 						{
 						_localctx = new MulDivExpContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 83;
-						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
 						State = 84;
+						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
+						State = 85;
 						_la = TokenStream.LA(1);
 						if ( !(_la==ASTERISK || _la==SLASH) ) {
 						ErrorHandler.RecoverInline(this);
@@ -923,17 +952,17 @@ public partial class FipParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 85;
-						expression(7);
+						State = 86;
+						expression(8);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new AddSubExpContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 86;
-						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
 						State = 87;
+						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
+						State = 88;
 						_la = TokenStream.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						ErrorHandler.RecoverInline(this);
@@ -942,14 +971,14 @@ public partial class FipParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 88;
-						expression(6);
+						State = 89;
+						expression(7);
 						}
 						break;
 					}
 					} 
 				}
-				State = 93;
+				State = 94;
 				ErrorHandler.Sync(this);
 				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
 			}
@@ -974,41 +1003,42 @@ public partial class FipParser : Parser {
 	}
 	private bool expression_sempred(ExpressionContext _localctx, int predIndex) {
 		switch (predIndex) {
-		case 0: return Precpred(Context, 6);
-		case 1: return Precpred(Context, 5);
+		case 0: return Precpred(Context, 7);
+		case 1: return Precpred(Context, 6);
 		}
 		return true;
 	}
 
 	private static int[] _serializedATN = {
-		4,1,23,95,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,24,96,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,1,0,5,0,20,8,0,10,0,12,0,23,9,0,1,0,1,0,1,1,1,1,1,1,1,2,1,
 		2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,3,3,39,8,3,1,3,1,3,1,4,1,4,3,4,45,8,4,
 		1,4,1,4,1,5,1,5,1,5,3,5,52,8,5,4,5,54,8,5,11,5,12,5,55,1,5,1,5,1,6,1,6,
 		1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,
-		8,1,8,1,8,3,8,82,8,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,90,8,8,10,8,12,8,93,9,
-		8,1,8,0,1,16,9,0,2,4,6,8,10,12,14,16,0,3,1,1,22,22,1,0,7,8,1,0,9,10,100,
-		0,21,1,0,0,0,2,26,1,0,0,0,4,34,1,0,0,0,6,36,1,0,0,0,8,42,1,0,0,0,10,48,
-		1,0,0,0,12,59,1,0,0,0,14,65,1,0,0,0,16,81,1,0,0,0,18,20,3,2,1,0,19,18,
-		1,0,0,0,20,23,1,0,0,0,21,19,1,0,0,0,21,22,1,0,0,0,22,24,1,0,0,0,23,21,
-		1,0,0,0,24,25,5,0,0,1,25,1,1,0,0,0,26,27,3,4,2,0,27,28,7,0,0,0,28,3,1,
-		0,0,0,29,35,3,14,7,0,30,35,3,10,5,0,31,35,3,12,6,0,32,35,3,6,3,0,33,35,
-		3,8,4,0,34,29,1,0,0,0,34,30,1,0,0,0,34,31,1,0,0,0,34,32,1,0,0,0,34,33,
-		1,0,0,0,35,5,1,0,0,0,36,38,5,16,0,0,37,39,5,20,0,0,38,37,1,0,0,0,38,39,
-		1,0,0,0,39,40,1,0,0,0,40,41,5,6,0,0,41,7,1,0,0,0,42,44,5,17,0,0,43,45,
-		5,20,0,0,44,43,1,0,0,0,44,45,1,0,0,0,45,46,1,0,0,0,46,47,5,6,0,0,47,9,
-		1,0,0,0,48,53,5,14,0,0,49,51,3,16,8,0,50,52,5,5,0,0,51,50,1,0,0,0,51,52,
-		1,0,0,0,52,54,1,0,0,0,53,49,1,0,0,0,54,55,1,0,0,0,55,53,1,0,0,0,55,56,
-		1,0,0,0,56,57,1,0,0,0,57,58,5,6,0,0,58,11,1,0,0,0,59,60,5,15,0,0,60,61,
-		3,16,8,0,61,62,5,11,0,0,62,63,3,16,8,0,63,64,5,6,0,0,64,13,1,0,0,0,65,
-		66,5,13,0,0,66,67,5,12,0,0,67,68,5,19,0,0,68,69,5,11,0,0,69,70,3,16,8,
-		0,70,71,5,6,0,0,71,15,1,0,0,0,72,73,6,8,-1,0,73,74,5,1,0,0,74,75,3,16,
-		8,0,75,76,5,2,0,0,76,82,1,0,0,0,77,82,5,18,0,0,78,82,5,19,0,0,79,82,5,
-		20,0,0,80,82,5,21,0,0,81,72,1,0,0,0,81,77,1,0,0,0,81,78,1,0,0,0,81,79,
-		1,0,0,0,81,80,1,0,0,0,82,91,1,0,0,0,83,84,10,6,0,0,84,85,7,1,0,0,85,90,
-		3,16,8,7,86,87,10,5,0,0,87,88,7,2,0,0,88,90,3,16,8,6,89,83,1,0,0,0,89,
-		86,1,0,0,0,90,93,1,0,0,0,91,89,1,0,0,0,91,92,1,0,0,0,92,17,1,0,0,0,93,
-		91,1,0,0,0,9,21,34,38,44,51,55,81,89,91
+		8,1,8,1,8,1,8,3,8,83,8,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,91,8,8,10,8,12,8,
+		94,9,8,1,8,0,1,16,9,0,2,4,6,8,10,12,14,16,0,3,1,1,23,23,1,0,7,8,1,0,9,
+		10,102,0,21,1,0,0,0,2,26,1,0,0,0,4,34,1,0,0,0,6,36,1,0,0,0,8,42,1,0,0,
+		0,10,48,1,0,0,0,12,59,1,0,0,0,14,65,1,0,0,0,16,82,1,0,0,0,18,20,3,2,1,
+		0,19,18,1,0,0,0,20,23,1,0,0,0,21,19,1,0,0,0,21,22,1,0,0,0,22,24,1,0,0,
+		0,23,21,1,0,0,0,24,25,5,0,0,1,25,1,1,0,0,0,26,27,3,4,2,0,27,28,7,0,0,0,
+		28,3,1,0,0,0,29,35,3,14,7,0,30,35,3,10,5,0,31,35,3,12,6,0,32,35,3,6,3,
+		0,33,35,3,8,4,0,34,29,1,0,0,0,34,30,1,0,0,0,34,31,1,0,0,0,34,32,1,0,0,
+		0,34,33,1,0,0,0,35,5,1,0,0,0,36,38,5,16,0,0,37,39,5,20,0,0,38,37,1,0,0,
+		0,38,39,1,0,0,0,39,40,1,0,0,0,40,41,5,6,0,0,41,7,1,0,0,0,42,44,5,17,0,
+		0,43,45,5,20,0,0,44,43,1,0,0,0,44,45,1,0,0,0,45,46,1,0,0,0,46,47,5,6,0,
+		0,47,9,1,0,0,0,48,53,5,14,0,0,49,51,3,16,8,0,50,52,5,5,0,0,51,50,1,0,0,
+		0,51,52,1,0,0,0,52,54,1,0,0,0,53,49,1,0,0,0,54,55,1,0,0,0,55,53,1,0,0,
+		0,55,56,1,0,0,0,56,57,1,0,0,0,57,58,5,6,0,0,58,11,1,0,0,0,59,60,5,15,0,
+		0,60,61,3,16,8,0,61,62,5,11,0,0,62,63,3,16,8,0,63,64,5,6,0,0,64,13,1,0,
+		0,0,65,66,5,13,0,0,66,67,5,12,0,0,67,68,5,19,0,0,68,69,5,11,0,0,69,70,
+		3,16,8,0,70,71,5,6,0,0,71,15,1,0,0,0,72,73,6,8,-1,0,73,74,5,1,0,0,74,75,
+		3,16,8,0,75,76,5,2,0,0,76,83,1,0,0,0,77,83,5,18,0,0,78,83,5,19,0,0,79,
+		83,5,20,0,0,80,83,5,21,0,0,81,83,5,22,0,0,82,72,1,0,0,0,82,77,1,0,0,0,
+		82,78,1,0,0,0,82,79,1,0,0,0,82,80,1,0,0,0,82,81,1,0,0,0,83,92,1,0,0,0,
+		84,85,10,7,0,0,85,86,7,1,0,0,86,91,3,16,8,8,87,88,10,6,0,0,88,89,7,2,0,
+		0,89,91,3,16,8,7,90,84,1,0,0,0,90,87,1,0,0,0,91,94,1,0,0,0,92,90,1,0,0,
+		0,92,93,1,0,0,0,93,17,1,0,0,0,94,92,1,0,0,0,9,21,34,38,44,51,55,82,90,
+		92
 	};
 
 	public static readonly ATN _ATN =

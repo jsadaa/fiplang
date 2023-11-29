@@ -123,18 +123,6 @@ public interface IFipListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStringAtomExp([NotNull] FipParser.StringAtomExpContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>numericAtomExp</c>
-	/// labeled alternative in <see cref="FipParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNumericAtomExp([NotNull] FipParser.NumericAtomExpContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>numericAtomExp</c>
-	/// labeled alternative in <see cref="FipParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNumericAtomExp([NotNull] FipParser.NumericAtomExpContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>mulDivExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.
 	/// </summary>
@@ -146,6 +134,30 @@ public interface IFipListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitMulDivExp([NotNull] FipParser.MulDivExpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>doubleAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterDoubleAtomExp([NotNull] FipParser.DoubleAtomExpContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>doubleAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitDoubleAtomExp([NotNull] FipParser.DoubleAtomExpContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>integerAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIntegerAtomExp([NotNull] FipParser.IntegerAtomExpContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>integerAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIntegerAtomExp([NotNull] FipParser.IntegerAtomExpContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>parenthesisExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.

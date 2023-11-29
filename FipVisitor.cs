@@ -87,19 +87,26 @@ public interface IFipVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStringAtomExp([NotNull] FipParser.StringAtomExpContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>numericAtomExp</c>
-	/// labeled alternative in <see cref="FipParser.expression"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNumericAtomExp([NotNull] FipParser.NumericAtomExpContext context);
-	/// <summary>
 	/// Visit a parse tree produced by the <c>mulDivExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitMulDivExp([NotNull] FipParser.MulDivExpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>doubleAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitDoubleAtomExp([NotNull] FipParser.DoubleAtomExpContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>integerAtomExp</c>
+	/// labeled alternative in <see cref="FipParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIntegerAtomExp([NotNull] FipParser.IntegerAtomExpContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>parenthesisExp</c>
 	/// labeled alternative in <see cref="FipParser.expression"/>.

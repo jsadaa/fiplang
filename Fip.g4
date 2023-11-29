@@ -26,7 +26,8 @@ expression          : '(' expression ')'                        #parenthesisExp
                     | STRING                                    #stringAtomExp
                     | IDENTIFIER                                #identifierAtomExp
                     | REFERENCE                                 #referenceAtomExp
-                    | NUMBER                                    #numericAtomExp
+                    | DOUBLE                                    #doubleAtomExp
+                    | INTEGER                                   #integerAtomExp
                     ;
                                       
 fragment LETTER     : [a-zA-Z] ;
@@ -42,7 +43,7 @@ SLASH               : '/' ;
 PLUS                : '+' ;
 MINUS               : '-' ;
 ASSIGN              : 'to' ;
-VALUETYPE           : 'int' | 'float' | 'string' ;
+VALUETYPE           : 'int' | 'double' | 'string' ;
 SET                 : 'set' ;
 PRINT               : 'print' ;
 UPDATE              : 'update' ;
@@ -51,6 +52,7 @@ FREEMEM             : 'freemem' ;
 STRING              : '"' .*? '"' ;
 IDENTIFIER          : LETTER (LETTER | DIGIT)* ;
 REFERENCE           : AT LETTER (LETTER | DIGIT)* ;
-NUMBER              : DIGIT+ ('.' DIGIT+)? ;
+DOUBLE              : DIGIT+ '.' DIGIT+;
+INTEGER             : DIGIT+;
 NEWLINE             : [\r\n]+;
 WHITESPACE          : ' ' -> skip;

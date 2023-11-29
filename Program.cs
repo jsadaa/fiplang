@@ -5,7 +5,7 @@ using FipLang.Type;
 
 namespace FipLang
 {
-    class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
@@ -35,7 +35,7 @@ namespace FipLang
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
             }
         }
     }
