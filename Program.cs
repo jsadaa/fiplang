@@ -50,20 +50,20 @@ namespace FipLang
                 FipParser.FileContext fileContext = fipParser.file();
                 var visitor = new CustomFipVisitor(dataRepository);
 
-                var returnContent = new StringBuilder();
+                var executionReturn = new StringBuilder();
 
                 // visit each context
-                foreach (var commandline in fileContext.commandline())
+                foreach (var commandlineContext in fileContext.commandline())
                 {
-                    Wrapper contextReturn = visitor.Visit(commandline);
+                    Wrapper contextReturn = visitor.Visit(commandlineContext);
                     
                     // if the commandline data return is not void, append the data to the result content
                     if (contextReturn.Type != Integrated.Void)
-                        returnContent.AppendLine(contextReturn.Value.ToString());
+                        executionReturn.AppendLine(contextReturn.Value.ToString());
                 }
                 
                 // print the result content
-                Console.Write(returnContent);
+                Console.Write(executionReturn);
             }
             catch (Exception e)
             {
