@@ -29,12 +29,12 @@ namespace FipLang
                 
                 var resultContent = new StringBuilder();
 
-                // visit each commandline and get the data
+                // visit each context
                 foreach (var commandline in fileContext.commandline())
                 {
                     var data = visitor.Visit(commandline);
                     
-                    // if the commandline is not void, append the data to the result content
+                    // if the commandline data return is not void, append the data to the result content
                     if (data.Type != Integrated.Void)
                         resultContent.AppendLine(data.Value.ToString());
                 }
