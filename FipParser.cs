@@ -50,7 +50,7 @@ public partial class FipParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "'('", "')'", null, null, "'.'", "';'", "'*'", "'/'", "'+'", "'-'", 
-		"'to'", null, "'set'", "'print'", "'update'", "'mem'", "'freemem'", null, 
+		"'to'", null, "'set'", "'print'", "'mod'", "'mem'", "'freemem'", null, 
 		null, null, null, null, null, "' '"
 	};
 	private static readonly string[] _SymbolicNames = {

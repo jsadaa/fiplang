@@ -14,7 +14,7 @@ null
 null
 'set'
 'print'
-'update'
+'mod'
 'mem'
 'freemem'
 null

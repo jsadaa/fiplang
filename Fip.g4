@@ -46,7 +46,7 @@ ASSIGN              : 'to' ;
 VALUETYPE           : 'int' | 'double' | 'string' ;
 SET                 : 'set' ;
 PRINT               : 'print' ;
-UPDATE              : 'update' ;
+UPDATE              : 'mod' ;
 MEM                 : 'mem' ;
 FREEMEM             : 'freemem' ;
 STRING              : '"' .*? '"' ;
