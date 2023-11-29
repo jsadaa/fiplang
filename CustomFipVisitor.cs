@@ -8,11 +8,11 @@ namespace FipLang;
 
 public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 {
-    private readonly Repository _data;
+    private readonly Repository _repository;
 
-    public CustomFipVisitor(Repository data)
+    public CustomFipVisitor(Repository repository)
     {
-        _data = data;
+        _repository = repository;
     }
 
     public override Wrapper VisitIntegerAtomExp(FipParser.IntegerAtomExpContext context)
@@ -29,6 +29,7 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         return new Wrapper
         {
             Type = Integrated.Double,
+            // Parse the double with InvariantCulture to avoid problems with the decimal separator
             Value = new DoubleValue(double.Parse(context.DOUBLE().GetText(), CultureInfo.InvariantCulture))
         };
     }
@@ -55,19 +56,19 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitReferenceAtomExp(FipParser.ReferenceAtomExpContext context)
     {
-        // get the identifier from the reference and remove the @
-        var identifier = context.REFERENCE().GetText()[1..];
+        // get the identifier of the reference by removing the @ symbol
+        string identifier = context.REFERENCE().GetText()[1..];
         
         // Get the value from the repository
-        var refValue = _data[identifier];
+        IValue referenceValue = _repository[identifier];
 
         // Convert the value to a wrapper
-        return refValue switch
+        return referenceValue switch
         {
             StringValue stringValue => new Wrapper { Type = Integrated.String, Value = new StringValue(stringValue.Content) },
             IntegerValue integerValue => new Wrapper { Type = Integrated.Integer, Value = new IntegerValue(integerValue.Content) },
             DoubleValue doubleValue => new Wrapper { Type = Integrated.Double, Value = new DoubleValue(doubleValue.Content) },
-            _ => throw new InvalidOperationException("Unsupported type: " + refValue.GetType())
+            _ => throw new InvalidOperationException("Unsupported type: " + referenceValue.GetType())
         };
     }
 
@@ -78,12 +79,12 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitMulDivExp(FipParser.MulDivExpContext context)
     {
-        var leftOpData = Visit(context.expression(0));
-        var rightOpData = Visit(context.expression(1));
+        Wrapper leftOpData = Visit(context.expression(0));
+        Wrapper rightOpData = Visit(context.expression(1));
         
         // Convert to double for calculation
-        var leftOpDouble = double.Parse(leftOpData.Value.ToString(), CultureInfo.InvariantCulture);
-        var rightOpDouble = double.Parse(rightOpData.Value.ToString(), CultureInfo.InvariantCulture);
+        double leftOpDouble = double.Parse(leftOpData.Value.ToString(), CultureInfo.InvariantCulture);
+        double rightOpDouble = double.Parse(rightOpData.Value.ToString(), CultureInfo.InvariantCulture);
         double calcResult = 0;
 
         // Check if the operands are valid (not string)
@@ -101,12 +102,12 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitAddSubExp(FipParser.AddSubExpContext context)
     {
-        var leftOpData = Visit(context.expression(0));
-        var rightOpData = Visit(context.expression(1));
+        Wrapper leftOpData = Visit(context.expression(0));
+        Wrapper rightOpData = Visit(context.expression(1));
         
         // Convert to double for calculation
-        var leftOpDouble = double.Parse(leftOpData.Value.ToString(), CultureInfo.InvariantCulture);
-        var rightOpDouble = double.Parse(rightOpData.Value.ToString(), CultureInfo.InvariantCulture);
+        double leftOpDouble = double.Parse(leftOpData.Value.ToString(), CultureInfo.InvariantCulture);
+        double rightOpDouble = double.Parse(rightOpData.Value.ToString(), CultureInfo.InvariantCulture);
         double calcResult = 0;
 
         // Check if the operands are valid (not string)
@@ -124,17 +125,17 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitAssignment(FipParser.AssignmentContext context)
     {
-        var assignType = context.VALUETYPE().GetText();
-        var identifier = context.IDENTIFIER().GetText();
-        var dataToAssign = Visit(context.expression());
+        string assignType = context.VALUETYPE().GetText();
+        string identifier = context.IDENTIFIER().GetText();
+        Wrapper assignData = Visit(context.expression());
 
         // Check if the type of the data is the same as the type of the assignment
-        if (dataToAssign.Type != assignType.ToFipType())
-            throw new InvalidOperationException("Invalid type assignment: " + dataToAssign.Type.ToLowerStr() +
+        if (assignData.Type != assignType.ToFipType())
+            throw new InvalidOperationException("Invalid type assignment: " + assignData.Type.ToLowerStr() +
                                                 " to " + assignType);
 
         // Add the data to the repository
-        _data[identifier] = dataToAssign.Value;
+        _repository[identifier] = assignData.Value;
 
         // Return the wrapper
         return new Wrapper { Type = Integrated.Void, Value = new StringValue("") };
@@ -142,17 +143,19 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitUpdate(FipParser.UpdateContext context)
     {
-        var reference = context.expression(0).GetText()[1..];
-        var referenceData = Visit(context.expression(0));
-        var dataToUpdate = Visit(context.expression(1));
+        string reference = context.expression(0).GetText()[1..];
+        
+        // We get the reference to compare the type of the data
+        Wrapper referenceData = Visit(context.expression(0));
+        Wrapper updateData = Visit(context.expression(1));
 
         // Check if the type of the data is the same as the type of the reference
-        if (referenceData.Type != dataToUpdate.Type)
-            throw new InvalidOperationException("Invalid type assignment: " + dataToUpdate.Type.ToLowerStr() +
+        if (referenceData.Type != updateData.Type)
+            throw new InvalidOperationException("Invalid type assignment: " + updateData.Type.ToLowerStr() +
                                                 " to " + referenceData.Type.ToLowerStr());
 
         // Update the data in the repository
-        _data[reference] = dataToUpdate.Value;
+        _repository[reference] = updateData.Value;
 
         // Return the wrapper
         return new Wrapper { Type = Integrated.Void, Value = new StringValue("") };
@@ -161,26 +164,27 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
     public override Wrapper VisitPrint(FipParser.PrintContext context)
     {
-        // Get the data from the expression(s)
-        var dataList = context.expression().Select(Visit).ToList();
-        Wrapper dataToPrint;
+        // Get a list of all the data to print
+        List<Wrapper> dataList = context.expression().Select(Visit).ToList();
+        Wrapper printData;
 
         // Check if there is only one data to print or more
         if (dataList.Count == 1)
         {
-            dataToPrint = dataList[0];
+            printData = dataList[0];
         }
         else
         {
-            dataToPrint = new Wrapper { Type = Integrated.String, Value = new StringValue("") };
+            printData = new Wrapper { Type = Integrated.String, Value = new StringValue("") };
+            
             // Concatenate the data to print
             foreach (var data in dataList)
             {
-                dataToPrint.Value = new StringValue(dataToPrint.Value.ToString() + data.Value.ToString());
+                printData.Value = new StringValue(printData.Value.ToString() + data.Value.ToString());
             }
         }
 
-        return dataToPrint;
+        return printData;
     }
 
     public override Wrapper VisitCommandline(FipParser.CommandlineContext context)
@@ -194,20 +198,20 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         if (context.REFERENCE() != null)
         {
             // Get the data from the repository and return the wrapper
-            var recordData = _data[context.REFERENCE().GetText()[1..]];
+            IValue referenceValue = _repository[context.REFERENCE().GetText()[1..]];
             return new Wrapper
             {
                 Type = Integrated.String,
                 Value = new StringValue(
-                    $"{recordData.FromFipValue().ToLowerStr()}[{recordData.Length}]: @{context.REFERENCE().GetText()[1..]} = {recordData}")
+                    $"{referenceValue.FromFipValue().ToLowerStr()}[{referenceValue.Length}]: @{context.REFERENCE().GetText()[1..]} = {referenceValue}")
             };
         }
 
-        // Get all the data from the repository
+        // Else get all the data from the repository
         var stringBuilder = new StringBuilder();
         
         // Concatenate the data
-        foreach (var record in _data.Values)
+        foreach (KeyValuePair<string?, IValue> record in _repository.Values)
         {
             stringBuilder.AppendLine(
                 $"{record.Value.FromFipValue().ToLowerStr()}[{record.Value.Length}]: @{record.Key} = {record.Value}");
@@ -229,12 +233,12 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         if (context.REFERENCE() != null)
         {
             // Free the reference data and return the wrapper
-            _data.Free(context.REFERENCE().GetText()[1..]);
+            _repository.Free(context.REFERENCE().GetText()[1..]);
             return new Wrapper { Type = Integrated.Void, Value = new StringValue("") };
         }
 
         // Free all the data from the repository
-        _data.FreeAll();
+        _repository.FreeAll();
         return new Wrapper { Type = Integrated.Void, Value = new StringValue("") };
     }
 

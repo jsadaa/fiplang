@@ -16,7 +16,7 @@ namespace FipLang
             // If no arguments are passed, start interactive mode
             if (args.Length == 0)
             {
-                Console.WriteLine("Fip 1.0.0");
+                Console.WriteLine("Fip 0.0.0.0.1 - Fip Interactive Prompt");
                 Console.WriteLine("Usage: fip [filename]");
                 Console.WriteLine("Press Ctrl+C to exit");
                 Console.WriteLine();
@@ -42,27 +42,28 @@ namespace FipLang
             {
                 // create the lexer, parser
                 ICharStream inputStream = CharStreams.fromString(input);
-                FipLexer fipLexer = new FipLexer(inputStream);
-                CommonTokenStream commonTokenStream = new CommonTokenStream(fipLexer);
-                FipParser fipParser = new FipParser(commonTokenStream);
+                var fipLexer = new FipLexer(inputStream);
+                var commonTokenStream = new CommonTokenStream(fipLexer);
+                var fipParser = new FipParser(commonTokenStream);
 
                 // parse the file and create the visitor
                 FipParser.FileContext fileContext = fipParser.file();
-                CustomFipVisitor visitor = new CustomFipVisitor(dataRepository);
+                var visitor = new CustomFipVisitor(dataRepository);
 
-                var resultContent = new StringBuilder();
+                var returnContent = new StringBuilder();
 
                 // visit each context
                 foreach (var commandline in fileContext.commandline())
                 {
-                    var data = visitor.Visit(commandline);
+                    Wrapper contextReturn = visitor.Visit(commandline);
                     
                     // if the commandline data return is not void, append the data to the result content
-                    if (data.Type != Integrated.Void)
-                        resultContent.AppendLine(data.Value.ToString());
+                    if (contextReturn.Type != Integrated.Void)
+                        returnContent.AppendLine(contextReturn.Value.ToString());
                 }
-
-                Console.Write(resultContent);
+                
+                // print the result content
+                Console.Write(returnContent);
             }
             catch (Exception e)
             {
