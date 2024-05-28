@@ -48,7 +48,9 @@ It can run in two modes:
 
 Here is an example of a simple program written in Fip:
 
-```shell
+```
+print "hello world";
+set bool res = true;
 print @res;
 mod @res = false;
 print @res;
