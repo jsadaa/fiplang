@@ -104,7 +104,7 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
            )
             throw new InvalidOperationException("Invalid operand type: " + leftOpData.Type.ToLowerStr() +
                                                 " " + rightOpData.Type.ToLowerStr());
-
+        
         // convert to string for equality comparison
         if (context.EQUALS() != null)
             return leftOpData.Value.ToString().Equals(rightOpData.Value.ToString())
@@ -112,9 +112,11 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
                 : new Wrapper { Type = Integrated.Bool, Value = new BoolValue(false) };
 
         if (context.NOTEQUALS() != null)
-            return leftOpData.Value.ToString().Equals(rightOpData.Value.ToString())
+        {
+            return !leftOpData.Value.ToString().Equals(rightOpData.Value.ToString())
                 ? new Wrapper { Type = Integrated.Bool, Value = new BoolValue(true) }
                 : new Wrapper { Type = Integrated.Bool, Value = new BoolValue(false) };
+        }
 
         // other comparisons must be integer or double (greater, greater equals, less, less equals)
         if (leftOpData.Type == Integrated.String || rightOpData.Type == Integrated.String)
@@ -263,11 +265,6 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         return printData;
     }
 
-    public override Wrapper VisitCommandline(FipParser.CommandlineContext context)
-    {
-        return Visit(context.command());
-    }
-
     public override Wrapper VisitMem(FipParser.MemContext context)
     {
         // Check if there is a reference
@@ -275,11 +272,12 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         {
             // Get the data from the repository and return the wrapper
             var referenceValue = _repository[context.REFERENCE().GetText()[1..]];
+            var length = referenceValue is StringValue ? $"[{referenceValue.Length}]" : "";
             return new Wrapper
             {
                 Type = Integrated.String,
                 Value = new StringValue(
-                    $"{referenceValue.FromFipValue().ToLowerStr()}[{referenceValue.Length}]: @{context.REFERENCE().GetText()[1..]} = {referenceValue}")
+                    $"{referenceValue.FromFipValue().ToLowerStr()}[{length}]: @{context.REFERENCE().GetText()[1..]} = {referenceValue}")
             };
         }
 
@@ -288,8 +286,11 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
 
         // Concatenate the data
         foreach (var record in _repository.Values)
+        {
+            var length = record.Value is StringValue ? $"[{record.Value.Length}]" : "";
             stringBuilder.AppendLine(
-                $"{record.Value.FromFipValue().ToLowerStr()}[{record.Value.Length}]: @{record.Key} = {record.Value}");
+                $"{record.Value.FromFipValue().ToLowerStr()}[{length}]: @{record.Key} = {record.Value}");
+        }
 
         // Remove last new line if exists
         if (stringBuilder.Length > 0) stringBuilder.Remove(stringBuilder.Length - 1, 1);
@@ -326,5 +327,36 @@ public class CustomFipVisitor : FipBaseVisitor<Wrapper>
         if (context.freemem() != null) return Visit(context.freemem());
 
         throw new InvalidOperationException("Invalid command: " + context.GetText());
+    }
+
+    public override Wrapper VisitIfStatement(FipParser.IfStatementContext context)
+    {
+        // Get the condition data
+        var conditionData = Visit(context.expression());
+
+        // Check if the condition is true
+        if (conditionData.Value is BoolValue { Content: true })
+        {
+            // Execute the if block
+            Visit(context.thenstmt);
+        }
+        else
+        {
+            // Check if there is an else block
+            if (context.elsestmt != null)
+            {
+                // Execute the else block
+                Visit(context.elsestmt);
+            }
+        }
+
+        // Return the wrapper
+        return new Wrapper { Type = Integrated.Void, Value = new StringValue("") };
+    }
+    
+    
+    public override Wrapper VisitCommandline(FipParser.CommandlineContext context)
+    {
+        return Visit(context.statement());
     }
 }
