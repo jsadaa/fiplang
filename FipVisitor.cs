@@ -44,6 +44,20 @@ public interface IFipVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCommandline([NotNull] FipParser.CommandlineContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatement([NotNull] FipParser.IfStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>commandStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitCommandStatement([NotNull] FipParser.CommandStatementContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="FipParser.command"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>

@@ -60,6 +60,34 @@ public partial class FipBaseListener : IFipListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitCommandline([NotNull] FipParser.CommandlineContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatement([NotNull] FipParser.IfStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatement([NotNull] FipParser.IfStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>commandStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterCommandStatement([NotNull] FipParser.CommandStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>commandStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitCommandStatement([NotNull] FipParser.CommandStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="FipParser.command"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>

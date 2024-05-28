@@ -38,29 +38,31 @@ public partial class FipParser : Parser {
 	public const int
 		T__0=1, T__1=2, COMMENT=3, MULTILINE_COMMENT=4, CONCAT=5, SEMICOLON=6, 
 		ASTERISK=7, SLASH=8, PLUS=9, MINUS=10, EQUALS=11, NOTEQUALS=12, LESS=13, 
-		GREATER=14, LESSEQUALS=15, GREATEREQUALS=16, ASSIGN=17, VALUETYPE=18, 
-		SET=19, PRINT=20, UPDATE=21, MEM=22, FREEMEM=23, BOOL=24, STRING=25, IDENTIFIER=26, 
-		REFERENCE=27, DOUBLE=28, INTEGER=29, NEWLINE=30, WHITESPACE=31;
+		GREATER=14, LESSEQUALS=15, GREATEREQUALS=16, IF=17, THEN=18, ELSE=19, 
+		ENDIF=20, ASSIGN=21, VALUETYPE=22, SET=23, PRINT=24, UPDATE=25, MEM=26, 
+		FREEMEM=27, BOOL=28, STRING=29, IDENTIFIER=30, REFERENCE=31, DOUBLE=32, 
+		INTEGER=33, NEWLINE=34, WHITESPACE=35;
 	public const int
-		RULE_file = 0, RULE_commandline = 1, RULE_command = 2, RULE_mem = 3, RULE_freemem = 4, 
-		RULE_print = 5, RULE_update = 6, RULE_assignment = 7, RULE_expression = 8;
+		RULE_file = 0, RULE_commandline = 1, RULE_statement = 2, RULE_command = 3, 
+		RULE_mem = 4, RULE_freemem = 5, RULE_print = 6, RULE_update = 7, RULE_assignment = 8, 
+		RULE_expression = 9;
 	public static readonly string[] ruleNames = {
-		"file", "commandline", "command", "mem", "freemem", "print", "update", 
-		"assignment", "expression"
+		"file", "commandline", "statement", "command", "mem", "freemem", "print", 
+		"update", "assignment", "expression"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "'('", "')'", null, null, "'.'", "';'", "'*'", "'/'", "'+'", "'-'", 
-		"'=='", "'!='", "'<'", "'>'", "'<='", "'>='", "'='", null, "'set'", "'print'", 
-		"'mod'", "'mem'", "'freemem'", null, null, null, null, null, null, null, 
-		"' '"
+		"'=='", "'!='", "'<'", "'>'", "'<='", "'>='", "'if'", "'then'", "'else'", 
+		"'endif'", "'to'", null, "'set'", "'print'", "'mod'", "'mem'", "'freemem'", 
+		null, null, null, null, null, null, null, "' '"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, "COMMENT", "MULTILINE_COMMENT", "CONCAT", "SEMICOLON", 
 		"ASTERISK", "SLASH", "PLUS", "MINUS", "EQUALS", "NOTEQUALS", "LESS", "GREATER", 
-		"LESSEQUALS", "GREATEREQUALS", "ASSIGN", "VALUETYPE", "SET", "PRINT", 
-		"UPDATE", "MEM", "FREEMEM", "BOOL", "STRING", "IDENTIFIER", "REFERENCE", 
-		"DOUBLE", "INTEGER", "NEWLINE", "WHITESPACE"
+		"LESSEQUALS", "GREATEREQUALS", "IF", "THEN", "ELSE", "ENDIF", "ASSIGN", 
+		"VALUETYPE", "SET", "PRINT", "UPDATE", "MEM", "FREEMEM", "BOOL", "STRING", 
+		"IDENTIFIER", "REFERENCE", "DOUBLE", "INTEGER", "NEWLINE", "WHITESPACE"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -133,21 +135,21 @@ public partial class FipParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 21;
+			State = 23;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 16252928L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 17440047104L) != 0)) {
 				{
 				{
-				State = 18;
+				State = 20;
 				commandline();
 				}
 				}
-				State = 23;
+				State = 25;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 24;
+			State = 26;
 			Match(Eof);
 			}
 		}
@@ -163,11 +165,10 @@ public partial class FipParser : Parser {
 	}
 
 	public partial class CommandlineContext : ParserRuleContext {
-		[System.Diagnostics.DebuggerNonUserCode] public CommandContext command() {
-			return GetRuleContext<CommandContext>(0);
-		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEWLINE() { return GetToken(FipParser.NEWLINE, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(FipParser.Eof, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement() {
+			return GetRuleContext<StatementContext>(0);
+		}
 		public CommandlineContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -195,21 +196,284 @@ public partial class FipParser : Parser {
 	public CommandlineContext commandline() {
 		CommandlineContext _localctx = new CommandlineContext(Context, State);
 		EnterRule(_localctx, 2, RULE_commandline);
+		try {
+			State = 32;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case NEWLINE:
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 28;
+				Match(NEWLINE);
+				}
+				break;
+			case IF:
+			case SET:
+			case PRINT:
+			case UPDATE:
+			case MEM:
+			case FREEMEM:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 29;
+				statement();
+				State = 30;
+				Match(NEWLINE);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class StatementContext : ParserRuleContext {
+		public StatementContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_statement; } }
+	 
+		public StatementContext() { }
+		public virtual void CopyFrom(StatementContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class CommandStatementContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public CommandContext command() {
+			return GetRuleContext<CommandContext>(0);
+		}
+		public CommandStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.EnterCommandStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.ExitCommandStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCommandStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class IfStatementContext : StatementContext {
+		public StatementContext thenstmt;
+		public StatementContext elsestmt;
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode IF() { return GetToken(FipParser.IF, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
+			return GetRuleContext<ExpressionContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode THEN() { return GetToken(FipParser.THEN, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ENDIF() { return GetToken(FipParser.ENDIF, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] NEWLINE() { return GetTokens(FipParser.NEWLINE); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode NEWLINE(int i) {
+			return GetToken(FipParser.NEWLINE, i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ELSE() { return GetToken(FipParser.ELSE, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext[] statement() {
+			return GetRuleContexts<StatementContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public StatementContext statement(int i) {
+			return GetRuleContext<StatementContext>(i);
+		}
+		public IfStatementContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.EnterIfStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IFipListener typedListener = listener as IFipListener;
+			if (typedListener != null) typedListener.ExitIfStatement(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IFipVisitor<TResult> typedVisitor = visitor as IFipVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitIfStatement(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public StatementContext statement() {
+		StatementContext _localctx = new StatementContext(Context, State);
+		EnterRule(_localctx, 4, RULE_statement);
 		int _la;
 		try {
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 26;
-			command();
-			State = 27;
-			_la = TokenStream.LA(1);
-			if ( !(_la==Eof || _la==NEWLINE) ) {
-			ErrorHandler.RecoverInline(this);
-			}
-			else {
-				ErrorHandler.ReportMatch(this);
-			    Consume();
-			}
+			State = 89;
+			ErrorHandler.Sync(this);
+			switch (TokenStream.LA(1)) {
+			case IF:
+				_localctx = new IfStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 1);
+				{
+				State = 34;
+				Match(IF);
+				State = 35;
+				expression(0);
+				State = 39;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				while (_la==NEWLINE) {
+					{
+					{
+					State = 36;
+					Match(NEWLINE);
+					}
+					}
+					State = 41;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				}
+				State = 42;
+				Match(THEN);
+				State = 46;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				while (_la==NEWLINE) {
+					{
+					{
+					State = 43;
+					Match(NEWLINE);
+					}
+					}
+					State = 48;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				}
+				State = 53;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				do {
+					{
+					{
+					State = 49;
+					((IfStatementContext)_localctx).thenstmt = statement();
+					State = 51;
+					ErrorHandler.Sync(this);
+					switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
+					case 1:
+						{
+						State = 50;
+						Match(NEWLINE);
+						}
+						break;
+					}
+					}
+					}
+					State = 55;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 260177920L) != 0) );
+				State = 60;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				while (_la==NEWLINE) {
+					{
+					{
+					State = 57;
+					Match(NEWLINE);
+					}
+					}
+					State = 62;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+				}
+				State = 84;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+				if (_la==ELSE) {
+					{
+					State = 63;
+					Match(ELSE);
+					State = 67;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+					while (_la==NEWLINE) {
+						{
+						{
+						State = 64;
+						Match(NEWLINE);
+						}
+						}
+						State = 69;
+						ErrorHandler.Sync(this);
+						_la = TokenStream.LA(1);
+					}
+					State = 74;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+					do {
+						{
+						{
+						State = 70;
+						((IfStatementContext)_localctx).elsestmt = statement();
+						State = 72;
+						ErrorHandler.Sync(this);
+						switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+						case 1:
+							{
+							State = 71;
+							Match(NEWLINE);
+							}
+							break;
+						}
+						}
+						}
+						State = 76;
+						ErrorHandler.Sync(this);
+						_la = TokenStream.LA(1);
+					} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 260177920L) != 0) );
+					State = 81;
+					ErrorHandler.Sync(this);
+					_la = TokenStream.LA(1);
+					while (_la==NEWLINE) {
+						{
+						{
+						State = 78;
+						Match(NEWLINE);
+						}
+						}
+						State = 83;
+						ErrorHandler.Sync(this);
+						_la = TokenStream.LA(1);
+					}
+					}
+				}
+
+				State = 86;
+				Match(ENDIF);
+				}
+				break;
+			case SET:
+			case PRINT:
+			case UPDATE:
+			case MEM:
+			case FREEMEM:
+				_localctx = new CommandStatementContext(_localctx);
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 88;
+				command();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -265,43 +529,43 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public CommandContext command() {
 		CommandContext _localctx = new CommandContext(Context, State);
-		EnterRule(_localctx, 4, RULE_command);
+		EnterRule(_localctx, 6, RULE_command);
 		try {
-			State = 34;
+			State = 96;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case SET:
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 29;
+				State = 91;
 				assignment();
 				}
 				break;
 			case PRINT:
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 30;
+				State = 92;
 				print();
 				}
 				break;
 			case UPDATE:
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 31;
+				State = 93;
 				update();
 				}
 				break;
 			case MEM:
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 32;
+				State = 94;
 				mem();
 				}
 				break;
 			case FREEMEM:
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 33;
+				State = 95;
 				freemem();
 				}
 				break;
@@ -322,7 +586,6 @@ public partial class FipParser : Parser {
 
 	public partial class MemContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MEM() { return GetToken(FipParser.MEM, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(FipParser.SEMICOLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode REFERENCE() { return GetToken(FipParser.REFERENCE, 0); }
 		public MemContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -350,25 +613,23 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public MemContext mem() {
 		MemContext _localctx = new MemContext(Context, State);
-		EnterRule(_localctx, 6, RULE_mem);
+		EnterRule(_localctx, 8, RULE_mem);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 36;
+			State = 98;
 			Match(MEM);
-			State = 38;
+			State = 100;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==REFERENCE) {
 				{
-				State = 37;
+				State = 99;
 				Match(REFERENCE);
 				}
 			}
 
-			State = 40;
-			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -384,7 +645,6 @@ public partial class FipParser : Parser {
 
 	public partial class FreememContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FREEMEM() { return GetToken(FipParser.FREEMEM, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(FipParser.SEMICOLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode REFERENCE() { return GetToken(FipParser.REFERENCE, 0); }
 		public FreememContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -412,25 +672,23 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public FreememContext freemem() {
 		FreememContext _localctx = new FreememContext(Context, State);
-		EnterRule(_localctx, 8, RULE_freemem);
+		EnterRule(_localctx, 10, RULE_freemem);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 42;
+			State = 102;
 			Match(FREEMEM);
-			State = 44;
+			State = 104;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==REFERENCE) {
 				{
-				State = 43;
+				State = 103;
 				Match(REFERENCE);
 				}
 			}
 
-			State = 46;
-			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -446,7 +704,6 @@ public partial class FipParser : Parser {
 
 	public partial class PrintContext : ParserRuleContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode PRINT() { return GetToken(FipParser.PRINT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(FipParser.SEMICOLON, 0); }
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext[] expression() {
 			return GetRuleContexts<ExpressionContext>();
 		}
@@ -483,39 +740,37 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public PrintContext print() {
 		PrintContext _localctx = new PrintContext(Context, State);
-		EnterRule(_localctx, 10, RULE_print);
+		EnterRule(_localctx, 12, RULE_print);
 		int _la;
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 48;
+			State = 106;
 			Match(PRINT);
-			State = 53;
+			State = 111;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			do {
 				{
 				{
-				State = 49;
+				State = 107;
 				expression(0);
-				State = 51;
+				State = 109;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if (_la==CONCAT) {
 					{
-					State = 50;
+					State = 108;
 					Match(CONCAT);
 					}
 				}
 
 				}
 				}
-				State = 55;
+				State = 113;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 1056964610L) != 0) );
-			State = 57;
-			Match(SEMICOLON);
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 16911433730L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -538,7 +793,6 @@ public partial class FipParser : Parser {
 			return GetRuleContext<ExpressionContext>(i);
 		}
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ASSIGN() { return GetToken(FipParser.ASSIGN, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(FipParser.SEMICOLON, 0); }
 		public UpdateContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -565,20 +819,18 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public UpdateContext update() {
 		UpdateContext _localctx = new UpdateContext(Context, State);
-		EnterRule(_localctx, 12, RULE_update);
+		EnterRule(_localctx, 14, RULE_update);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 59;
+			State = 115;
 			Match(UPDATE);
-			State = 60;
+			State = 116;
 			expression(0);
-			State = 61;
+			State = 117;
 			Match(ASSIGN);
-			State = 62;
+			State = 118;
 			expression(0);
-			State = 63;
-			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -600,7 +852,6 @@ public partial class FipParser : Parser {
 		[System.Diagnostics.DebuggerNonUserCode] public ExpressionContext expression() {
 			return GetRuleContext<ExpressionContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SEMICOLON() { return GetToken(FipParser.SEMICOLON, 0); }
 		public AssignmentContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
 		{
@@ -627,22 +878,20 @@ public partial class FipParser : Parser {
 	[RuleVersion(0)]
 	public AssignmentContext assignment() {
 		AssignmentContext _localctx = new AssignmentContext(Context, State);
-		EnterRule(_localctx, 14, RULE_assignment);
+		EnterRule(_localctx, 16, RULE_assignment);
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 65;
+			State = 120;
 			Match(SET);
-			State = 66;
+			State = 121;
 			Match(VALUETYPE);
-			State = 67;
+			State = 122;
 			Match(IDENTIFIER);
-			State = 68;
+			State = 123;
 			Match(ASSIGN);
-			State = 69;
+			State = 124;
 			expression(0);
-			State = 70;
-			Match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -906,14 +1155,14 @@ public partial class FipParser : Parser {
 		int _parentState = State;
 		ExpressionContext _localctx = new ExpressionContext(Context, _parentState);
 		ExpressionContext _prevctx = _localctx;
-		int _startState = 16;
-		EnterRecursionRule(_localctx, 16, RULE_expression, _p);
+		int _startState = 18;
+		EnterRecursionRule(_localctx, 18, RULE_expression, _p);
 		int _la;
 		try {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 83;
+			State = 137;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case T__0:
@@ -922,11 +1171,11 @@ public partial class FipParser : Parser {
 				Context = _localctx;
 				_prevctx = _localctx;
 
-				State = 73;
+				State = 127;
 				Match(T__0);
-				State = 74;
+				State = 128;
 				expression(0);
-				State = 75;
+				State = 129;
 				Match(T__1);
 				}
 				break;
@@ -935,7 +1184,7 @@ public partial class FipParser : Parser {
 				_localctx = new IdentifierAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 77;
+				State = 131;
 				Match(IDENTIFIER);
 				}
 				break;
@@ -944,7 +1193,7 @@ public partial class FipParser : Parser {
 				_localctx = new ReferenceAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 78;
+				State = 132;
 				Match(REFERENCE);
 				}
 				break;
@@ -953,7 +1202,7 @@ public partial class FipParser : Parser {
 				_localctx = new StringAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 79;
+				State = 133;
 				Match(STRING);
 				}
 				break;
@@ -962,7 +1211,7 @@ public partial class FipParser : Parser {
 				_localctx = new DoubleAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 80;
+				State = 134;
 				Match(DOUBLE);
 				}
 				break;
@@ -971,7 +1220,7 @@ public partial class FipParser : Parser {
 				_localctx = new IntegerAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 81;
+				State = 135;
 				Match(INTEGER);
 				}
 				break;
@@ -980,7 +1229,7 @@ public partial class FipParser : Parser {
 				_localctx = new BoolAtomExpContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 82;
+				State = 136;
 				Match(BOOL);
 				}
 				break;
@@ -988,25 +1237,25 @@ public partial class FipParser : Parser {
 				throw new NoViableAltException(this);
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 96;
+			State = 150;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,20,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 94;
+					State = 148;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,7,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,19,Context) ) {
 					case 1:
 						{
 						_localctx = new ComparisonExpContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 85;
+						State = 139;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
-						State = 86;
+						State = 140;
 						_la = TokenStream.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 129024L) != 0)) ) {
 						ErrorHandler.RecoverInline(this);
@@ -1015,7 +1264,7 @@ public partial class FipParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 87;
+						State = 141;
 						expression(10);
 						}
 						break;
@@ -1023,9 +1272,9 @@ public partial class FipParser : Parser {
 						{
 						_localctx = new MulDivExpContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 88;
+						State = 142;
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
-						State = 89;
+						State = 143;
 						_la = TokenStream.LA(1);
 						if ( !(_la==ASTERISK || _la==SLASH) ) {
 						ErrorHandler.RecoverInline(this);
@@ -1034,7 +1283,7 @@ public partial class FipParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 90;
+						State = 144;
 						expression(9);
 						}
 						break;
@@ -1042,9 +1291,9 @@ public partial class FipParser : Parser {
 						{
 						_localctx = new AddSubExpContext(new ExpressionContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expression);
-						State = 91;
+						State = 145;
 						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
-						State = 92;
+						State = 146;
 						_la = TokenStream.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						ErrorHandler.RecoverInline(this);
@@ -1053,16 +1302,16 @@ public partial class FipParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 93;
+						State = 147;
 						expression(8);
 						}
 						break;
 					}
 					} 
 				}
-				State = 98;
+				State = 152;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,8,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,20,Context);
 			}
 			}
 		}
@@ -1079,7 +1328,7 @@ public partial class FipParser : Parser {
 
 	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
 		switch (ruleIndex) {
-		case 8: return expression_sempred((ExpressionContext)_localctx, predIndex);
+		case 9: return expression_sempred((ExpressionContext)_localctx, predIndex);
 		}
 		return true;
 	}
@@ -1093,36 +1342,56 @@ public partial class FipParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,31,100,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
-		7,7,2,8,7,8,1,0,5,0,20,8,0,10,0,12,0,23,9,0,1,0,1,0,1,1,1,1,1,1,1,2,1,
-		2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,3,3,39,8,3,1,3,1,3,1,4,1,4,3,4,45,8,4,
-		1,4,1,4,1,5,1,5,1,5,3,5,52,8,5,4,5,54,8,5,11,5,12,5,55,1,5,1,5,1,6,1,6,
-		1,6,1,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,
-		8,1,8,1,8,1,8,1,8,3,8,84,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,5,8,95,
-		8,8,10,8,12,8,98,9,8,1,8,0,1,16,9,0,2,4,6,8,10,12,14,16,0,4,1,1,30,30,
-		1,0,11,16,1,0,7,8,1,0,9,10,108,0,21,1,0,0,0,2,26,1,0,0,0,4,34,1,0,0,0,
-		6,36,1,0,0,0,8,42,1,0,0,0,10,48,1,0,0,0,12,59,1,0,0,0,14,65,1,0,0,0,16,
-		83,1,0,0,0,18,20,3,2,1,0,19,18,1,0,0,0,20,23,1,0,0,0,21,19,1,0,0,0,21,
-		22,1,0,0,0,22,24,1,0,0,0,23,21,1,0,0,0,24,25,5,0,0,1,25,1,1,0,0,0,26,27,
-		3,4,2,0,27,28,7,0,0,0,28,3,1,0,0,0,29,35,3,14,7,0,30,35,3,10,5,0,31,35,
-		3,12,6,0,32,35,3,6,3,0,33,35,3,8,4,0,34,29,1,0,0,0,34,30,1,0,0,0,34,31,
-		1,0,0,0,34,32,1,0,0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,38,5,22,0,0,37,39,
-		5,27,0,0,38,37,1,0,0,0,38,39,1,0,0,0,39,40,1,0,0,0,40,41,5,6,0,0,41,7,
-		1,0,0,0,42,44,5,23,0,0,43,45,5,27,0,0,44,43,1,0,0,0,44,45,1,0,0,0,45,46,
-		1,0,0,0,46,47,5,6,0,0,47,9,1,0,0,0,48,53,5,20,0,0,49,51,3,16,8,0,50,52,
-		5,5,0,0,51,50,1,0,0,0,51,52,1,0,0,0,52,54,1,0,0,0,53,49,1,0,0,0,54,55,
-		1,0,0,0,55,53,1,0,0,0,55,56,1,0,0,0,56,57,1,0,0,0,57,58,5,6,0,0,58,11,
-		1,0,0,0,59,60,5,21,0,0,60,61,3,16,8,0,61,62,5,17,0,0,62,63,3,16,8,0,63,
-		64,5,6,0,0,64,13,1,0,0,0,65,66,5,19,0,0,66,67,5,18,0,0,67,68,5,26,0,0,
-		68,69,5,17,0,0,69,70,3,16,8,0,70,71,5,6,0,0,71,15,1,0,0,0,72,73,6,8,-1,
-		0,73,74,5,1,0,0,74,75,3,16,8,0,75,76,5,2,0,0,76,84,1,0,0,0,77,84,5,26,
-		0,0,78,84,5,27,0,0,79,84,5,25,0,0,80,84,5,28,0,0,81,84,5,29,0,0,82,84,
-		5,24,0,0,83,72,1,0,0,0,83,77,1,0,0,0,83,78,1,0,0,0,83,79,1,0,0,0,83,80,
-		1,0,0,0,83,81,1,0,0,0,83,82,1,0,0,0,84,96,1,0,0,0,85,86,10,9,0,0,86,87,
-		7,1,0,0,87,95,3,16,8,10,88,89,10,8,0,0,89,90,7,2,0,0,90,95,3,16,8,9,91,
-		92,10,7,0,0,92,93,7,3,0,0,93,95,3,16,8,8,94,85,1,0,0,0,94,88,1,0,0,0,94,
-		91,1,0,0,0,95,98,1,0,0,0,96,94,1,0,0,0,96,97,1,0,0,0,97,17,1,0,0,0,98,
-		96,1,0,0,0,9,21,34,38,44,51,55,83,94,96
+		4,1,35,154,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,1,0,5,0,22,8,0,10,0,12,0,25,9,0,1,0,1,0,1,1,1,1,1,
+		1,1,1,3,1,33,8,1,1,2,1,2,1,2,5,2,38,8,2,10,2,12,2,41,9,2,1,2,1,2,5,2,45,
+		8,2,10,2,12,2,48,9,2,1,2,1,2,3,2,52,8,2,4,2,54,8,2,11,2,12,2,55,1,2,5,
+		2,59,8,2,10,2,12,2,62,9,2,1,2,1,2,5,2,66,8,2,10,2,12,2,69,9,2,1,2,1,2,
+		3,2,73,8,2,4,2,75,8,2,11,2,12,2,76,1,2,5,2,80,8,2,10,2,12,2,83,9,2,3,2,
+		85,8,2,1,2,1,2,1,2,3,2,90,8,2,1,3,1,3,1,3,1,3,1,3,3,3,97,8,3,1,4,1,4,3,
+		4,101,8,4,1,5,1,5,3,5,105,8,5,1,6,1,6,1,6,3,6,110,8,6,4,6,112,8,6,11,6,
+		12,6,113,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,9,1,
+		9,1,9,1,9,1,9,1,9,1,9,1,9,3,9,138,8,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,
+		1,9,5,9,149,8,9,10,9,12,9,152,9,9,1,9,0,1,18,10,0,2,4,6,8,10,12,14,16,
+		18,0,3,1,0,11,16,1,0,7,8,1,0,9,10,173,0,23,1,0,0,0,2,32,1,0,0,0,4,89,1,
+		0,0,0,6,96,1,0,0,0,8,98,1,0,0,0,10,102,1,0,0,0,12,106,1,0,0,0,14,115,1,
+		0,0,0,16,120,1,0,0,0,18,137,1,0,0,0,20,22,3,2,1,0,21,20,1,0,0,0,22,25,
+		1,0,0,0,23,21,1,0,0,0,23,24,1,0,0,0,24,26,1,0,0,0,25,23,1,0,0,0,26,27,
+		5,0,0,1,27,1,1,0,0,0,28,33,5,34,0,0,29,30,3,4,2,0,30,31,5,34,0,0,31,33,
+		1,0,0,0,32,28,1,0,0,0,32,29,1,0,0,0,33,3,1,0,0,0,34,35,5,17,0,0,35,39,
+		3,18,9,0,36,38,5,34,0,0,37,36,1,0,0,0,38,41,1,0,0,0,39,37,1,0,0,0,39,40,
+		1,0,0,0,40,42,1,0,0,0,41,39,1,0,0,0,42,46,5,18,0,0,43,45,5,34,0,0,44,43,
+		1,0,0,0,45,48,1,0,0,0,46,44,1,0,0,0,46,47,1,0,0,0,47,53,1,0,0,0,48,46,
+		1,0,0,0,49,51,3,4,2,0,50,52,5,34,0,0,51,50,1,0,0,0,51,52,1,0,0,0,52,54,
+		1,0,0,0,53,49,1,0,0,0,54,55,1,0,0,0,55,53,1,0,0,0,55,56,1,0,0,0,56,60,
+		1,0,0,0,57,59,5,34,0,0,58,57,1,0,0,0,59,62,1,0,0,0,60,58,1,0,0,0,60,61,
+		1,0,0,0,61,84,1,0,0,0,62,60,1,0,0,0,63,67,5,19,0,0,64,66,5,34,0,0,65,64,
+		1,0,0,0,66,69,1,0,0,0,67,65,1,0,0,0,67,68,1,0,0,0,68,74,1,0,0,0,69,67,
+		1,0,0,0,70,72,3,4,2,0,71,73,5,34,0,0,72,71,1,0,0,0,72,73,1,0,0,0,73,75,
+		1,0,0,0,74,70,1,0,0,0,75,76,1,0,0,0,76,74,1,0,0,0,76,77,1,0,0,0,77,81,
+		1,0,0,0,78,80,5,34,0,0,79,78,1,0,0,0,80,83,1,0,0,0,81,79,1,0,0,0,81,82,
+		1,0,0,0,82,85,1,0,0,0,83,81,1,0,0,0,84,63,1,0,0,0,84,85,1,0,0,0,85,86,
+		1,0,0,0,86,87,5,20,0,0,87,90,1,0,0,0,88,90,3,6,3,0,89,34,1,0,0,0,89,88,
+		1,0,0,0,90,5,1,0,0,0,91,97,3,16,8,0,92,97,3,12,6,0,93,97,3,14,7,0,94,97,
+		3,8,4,0,95,97,3,10,5,0,96,91,1,0,0,0,96,92,1,0,0,0,96,93,1,0,0,0,96,94,
+		1,0,0,0,96,95,1,0,0,0,97,7,1,0,0,0,98,100,5,26,0,0,99,101,5,31,0,0,100,
+		99,1,0,0,0,100,101,1,0,0,0,101,9,1,0,0,0,102,104,5,27,0,0,103,105,5,31,
+		0,0,104,103,1,0,0,0,104,105,1,0,0,0,105,11,1,0,0,0,106,111,5,24,0,0,107,
+		109,3,18,9,0,108,110,5,5,0,0,109,108,1,0,0,0,109,110,1,0,0,0,110,112,1,
+		0,0,0,111,107,1,0,0,0,112,113,1,0,0,0,113,111,1,0,0,0,113,114,1,0,0,0,
+		114,13,1,0,0,0,115,116,5,25,0,0,116,117,3,18,9,0,117,118,5,21,0,0,118,
+		119,3,18,9,0,119,15,1,0,0,0,120,121,5,23,0,0,121,122,5,22,0,0,122,123,
+		5,30,0,0,123,124,5,21,0,0,124,125,3,18,9,0,125,17,1,0,0,0,126,127,6,9,
+		-1,0,127,128,5,1,0,0,128,129,3,18,9,0,129,130,5,2,0,0,130,138,1,0,0,0,
+		131,138,5,30,0,0,132,138,5,31,0,0,133,138,5,29,0,0,134,138,5,32,0,0,135,
+		138,5,33,0,0,136,138,5,28,0,0,137,126,1,0,0,0,137,131,1,0,0,0,137,132,
+		1,0,0,0,137,133,1,0,0,0,137,134,1,0,0,0,137,135,1,0,0,0,137,136,1,0,0,
+		0,138,150,1,0,0,0,139,140,10,9,0,0,140,141,7,0,0,0,141,149,3,18,9,10,142,
+		143,10,8,0,0,143,144,7,1,0,0,144,149,3,18,9,9,145,146,10,7,0,0,146,147,
+		7,2,0,0,147,149,3,18,9,8,148,139,1,0,0,0,148,142,1,0,0,0,148,145,1,0,0,
+		0,149,152,1,0,0,0,150,148,1,0,0,0,150,151,1,0,0,0,151,19,1,0,0,0,152,150,
+		1,0,0,0,21,23,32,39,46,51,55,60,67,72,76,81,84,89,96,100,104,109,113,137,
+		148,150
 	};
 
 	public static readonly ATN _ATN =

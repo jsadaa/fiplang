@@ -51,6 +51,30 @@ public interface IFipListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitCommandline([NotNull] FipParser.CommandlineContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterIfStatement([NotNull] FipParser.IfStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitIfStatement([NotNull] FipParser.IfStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>commandStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterCommandStatement([NotNull] FipParser.CommandStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>commandStatement</c>
+	/// labeled alternative in <see cref="FipParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitCommandStatement([NotNull] FipParser.CommandStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="FipParser.command"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
