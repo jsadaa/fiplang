@@ -2,23 +2,28 @@ grammar Fip;
 
 file                : (commandline)* EOF;
 
-commandline         :  command (NEWLINE | EOF);
-
-command             : assignment                                
-                    | print                                                    
-                    | update
-                    | mem
-                    | freemem;  
+commandline         : statement                 
+                    ;
                     
-mem                 : MEM REFERENCE? SEMICOLON;     
+statement           : IF expression NEWLINE THEN NEWLINE (command)* (ELSE NEWLINE (command)*)? ENDIF  #ifStatement
+                    | (command)*                                     #commandStatement
+                    ;
 
-freemem             : FREEMEM REFERENCE? SEMICOLON;     
+command             : assignment NEWLINE                                
+                    | print NEWLINE                                                 
+                    | update NEWLINE
+                    | mem NEWLINE
+                    | freemem NEWLINE; 
+                    
+mem                 : MEM REFERENCE?;     
 
-print               : PRINT (expression CONCAT?)+ SEMICOLON;
+freemem             : FREEMEM REFERENCE?;     
 
-update              : UPDATE expression ASSIGN expression SEMICOLON;
+print               : PRINT (expression CONCAT?)+;
 
-assignment          : SET VALUETYPE IDENTIFIER ASSIGN expression SEMICOLON;
+update              : UPDATE expression ASSIGN expression;
+
+assignment          : SET VALUETYPE IDENTIFIER ASSIGN expression;
                     
 expression          : '(' expression ')'                        #parenthesisExp
                     | expression (EQUALS|NOTEQUALS|LESS|GREATER|LESSEQUALS|GREATEREQUALS) expression #comparisonExp
@@ -50,7 +55,11 @@ LESS                : '<' ;
 GREATER             : '>' ;
 LESSEQUALS          : '<=' ;
 GREATEREQUALS       : '>=' ;
-ASSIGN              : '=' ;
+IF                  : 'if' ;
+THEN                : 'then' ;
+ELSE                : 'else' ;
+ENDIF               : 'endif' ;
+ASSIGN              : 'to' ;
 VALUETYPE           : 'int' | 'double' | 'string' | 'bool' ;
 SET                 : 'set' ;
 PRINT               : 'print' ;
@@ -63,5 +72,5 @@ IDENTIFIER          : LETTER (LETTER | DIGIT)* ;
 REFERENCE           : AT LETTER (LETTER | DIGIT)* ;
 DOUBLE              : DIGIT+ '.' DIGIT+;
 INTEGER             : DIGIT+;
-NEWLINE             : [\r\n]+;
+NEWLINE             : ('\r'? '\n' | '\r')+ ;
 WHITESPACE          : ' ' -> skip;
